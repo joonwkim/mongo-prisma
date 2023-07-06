@@ -1,3 +1,4 @@
+import styles from './styles.module.css'
 
 export default function AuthLayout({
     children,
@@ -7,9 +8,12 @@ export default function AuthLayout({
     return (
         <section className="pb-4 mt-3">
             <div className='bg-white'>
-                <section className='w-100 p-4 d-flex justify-content-center pb-4'>
-                    <div className="border border-round p-3">
-                        {children}
+                <section className='w-100 d-flex justify-content-center align-items-center'>
+                    <div className="border border-round border-info p-3">
+                        <div className={styles.main}>
+                            {children}
+                        </div>
+
                     </div>
                 </section>
             </div>
