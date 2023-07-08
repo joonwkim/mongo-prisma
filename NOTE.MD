@@ -75,3 +75,7 @@ module.exports = nextConfig
 //vercel
 vercel deploy
 vercel --prod
+
+//in case of prisma modify package.json like this
+ "db:push": "prisma db push",
+ "build": "prisma generate & next build",
