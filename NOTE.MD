@@ -11,16 +11,25 @@ pnpm add -D prisma
 pnpm add @prisma/client
 pnpx prisma init //to initialize prism
 
-Next steps:
-1. Set the DATABASE_URL in the .env file to point to your existing database. If your database has no tables yet, read https://pris.ly/d/getting-started 
-2. Set the provider of the datasource block in schema.prisma to match your database: postgresql, mysql, sqlite, sqlserver, mongodb or cockroachdb.      
-3. Run prisma db pull to turn your database schema into a Prisma schema.    
-4. Run prisma generate to generate the Prisma Client. You can then start querying your database.
-
-
+.env //create .env file on root directory
+enter DATABASE_URL value 
 add .env to .gitignore
 
-create model on schema.prisma
+update datasource in /prisma/schema.prisma 
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+clreate model in /prisma/schema
+model Todo {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  isCompleted Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 
 pnpx prisma db push
 pnpx prisma generate
@@ -29,12 +38,31 @@ create lib folder
 
 create prisma.ts to create prisma client instance
 
+import { PrismaClient } from "@prisma/client";
+
+declare global{
+   var prisma: PrismaClient | undefined
+}
+let prisma: PrismaClient
+let prismaPromise: Promise<PrismaClient>
+
+if (process.env.NODE_ENV === 'production') {
+  prisma = new PrismaClient()
+} else {
+  if (!global.prisma) {
+    global.prisma = new PrismaClient()
+  }
+  prisma = global.prisma
+}
+
+export default prisma
+
 create services folder for data service
 
 
 
 //set experimental
-modify next.config.ts to 
+modify next.config.js to 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     experimental:{
